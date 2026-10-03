@@ -1,7 +1,4 @@
-/* RC Joias · compra de ouro e cautelas
-   Cenas presas (pin) com scrub: GSAP + ScrollTrigger, rolagem suave com Lenis e texto por palavra com SplitType.
-   Só transform, opacity e clip-path são animados. Nas timelines com scrub, sempre fromTo/to (nunca from),
-   para o estado inicial não se perder quando o ScrollTrigger recalcula. */
+
 (() => {
   'use strict';
 
@@ -11,9 +8,9 @@
   const virgula = (n, casas) => n.toFixed(casas).replace('.', ',');
 
   const CENAS = ['inicio', 'avaliacao', 'compramos', 'cautela', 'domicilio', 'perguntas', 'contato'];
-  // ao pular para uma cena, parar onde ela já está montada (fração da cena)
+  
   const POUSO = { inicio: 0, avaliacao: 0.12, compramos: 0.14, cautela: 0.12, domicilio: 0.1, perguntas: 0.12, contato: 0.9 };
-  // a caneta escreve da esquerda para a direita
+  
   const PENA0 = { clipPath: 'inset(-20% 100% -30% -4%)' };
   const PENA1 = { clipPath: 'inset(-20% -4% -30% -4%)' };
 
@@ -59,25 +56,25 @@
   });
   window.addEventListener('load', () => ScrollTrigger.refresh());
 
-  /* ---------- preparação ---------- */
+  
 
   function prepara() {
     $$('[data-split]').forEach((el) => new SplitType(el, { types: 'words', tagName: 'span' }));
-    // palavras que deslizam precisam de máscara
+    
     $$('.cp-titulo .word, .cp-lead .word, .ct-titulo .word, .pq-titulo .word').forEach((w) => {
       const m = document.createElement('span');
       m.className = 'mascara';
       w.parentNode.insertBefore(m, w);
       m.appendChild(w);
     });
-    // marcador de pergunta ativa
+   
     $$('.pq-q').forEach((q) => {
       const m = document.createElement('span');
       m.className = 'pq-marca';
       m.setAttribute('aria-hidden', 'true');
       q.prepend(m);
     });
-    // visores começam zerados; o título da abertura entra depois do preloader
+   
     $$('.ab-visor .visor-num, .leitor-num').forEach((n) => { n.textContent = '0,00'; });
     gsap.set('.ab-visor .visor-ok, .leitor .visor-ok', { opacity: 0 });
     gsap.set('.ab-titulo .word, .ab-lead, .ab-dica', { opacity: 0 });
@@ -85,14 +82,12 @@
 
   function entradaAbertura() {
     gsap.timeline()
-      // como letra carimbada: cada palavra aparece de uma vez
+      
       .to('.ab-titulo .word', { opacity: 1, duration: 0.01, stagger: 0.07 })
       .to('.ab-lead, .ab-dica', { opacity: 1, duration: 0.6, stagger: 0.15 }, '+=0.1');
   }
 
-  /* ---------- utilidades ---------- */
-
-  // posição de um elemento dentro de outro, ignorando transformações (offset)
+  
   function posEm(el, ate) {
     let x = 0, y = 0, n = el;
     while (n && n !== ate) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; }
@@ -109,7 +104,7 @@
     });
   }
 
-  // se o conteúdo não couber na tela (celular baixo), a cena desliza para mostrar o resto
+  
   function panorama(tl, el, conteudo, inicio, duracao) {
     tl.fromTo(conteudo, { y: 0 }, { y: () => -Math.max(0, conteudo.scrollHeight - el.clientHeight), duration: duracao }, inicio);
   }
@@ -124,7 +119,7 @@
     lenis.scrollTo(y, { duration: 1.4, onComplete: foca });
   }
 
-  /* ---------- menu: índice com "você está aqui" ---------- */
+ 
 
   function menu() {
     const botao = $('.menu-botao'), painel = $('#indice'), fechar = $('.indice-fechar');
@@ -138,7 +133,7 @@
       botao.setAttribute('aria-expanded', 'true');
       fora.forEach((el) => { if (el) el.inert = true; });
       if (lenis) lenis.stop();
-      // a folha do índice desce como papel saindo da impressora
+      
       if (anima()) gsap.fromTo(painel, { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.6, ease: 'power3.inOut' });
       ($('[aria-current="location"]', painel) || $('.indice-lista a', painel)).focus();
       document.addEventListener('keydown', teclas);
@@ -188,7 +183,7 @@
     CENAS.forEach((id) => io.observe(document.getElementById(id)));
   }
 
-  /* ---------- régua: marcas nas cenas e ponteiro do progresso ---------- */
+  
 
   function regua() {
     const nav = $('.regua'), marcas = $$('.regua li');
@@ -218,7 +213,7 @@
     ScrollTrigger.addEventListener('refresh', posiciona);
   }
 
-  /* ---------- preloader: o visor conta o carregamento real, zera e vai para a balança ---------- */
+  
 
   function preloader(pronto) {
     const pl = $('.preloader'), fundo = $('.pl-fundo', pl), visor = $('.pl-visor', pl);
@@ -245,7 +240,7 @@
         .call(() => { num.textContent = '- - - -'; estado.textContent = 'tara'; }, null, 0.3)
         .call(() => { num.textContent = '0,00'; un.textContent = 'g'; }, null, 0.75)
         .to(estado, { opacity: 0, duration: 0.3 }, 0.9)
-        // o visor encolhe e se encaixa no visor da balança desenhada
+        
         .to(visor, {
           x: () => alvo.getBoundingClientRect().left - visor.getBoundingClientRect().left,
           y: () => alvo.getBoundingClientRect().top - visor.getBoundingClientRect().top,
@@ -256,7 +251,7 @@
     }
   }
 
-  /* ---------- 1. Abertura: a corrente pousa no prato; na saída, a câmera mergulha no prato ---------- */
+
 
   function abertura(cel) {
     const el = $('#inicio');
@@ -265,7 +260,7 @@
     const num = $('.ab-visor .visor-num', el), ok = $('.ab-visor .visor-ok', el), legenda = $('.ab-legenda', el);
     const mergulho = $('.ab-mergulho', el);
     const peso = { g: 0 };
-    // centro e raios do prato na tela, pelo desenho (viewBox 520 × 460, prato em 260,226)
+  
     const noPrato = () => {
       const k = balanca.clientWidth / 520, o = posEm(balanca, el);
       return { x: o.x + 260 * k, y: o.y + 226 * k, rx: 124 * k, ry: 27 * k };
@@ -273,7 +268,7 @@
     const elipse = (aberta) => {
       const p = noPrato();
       const R = Math.hypot(el.clientWidth, el.clientHeight) * 1.1;
-      // nasce de um ponto no centro do prato (se nascesse do tamanho do prato, cobriria a corrente)
+      
       return aberta ? `ellipse(${R}px ${R}px at ${p.x}px ${p.y}px)` : `ellipse(0px 0px at ${p.x}px ${p.y}px)`;
     };
 
@@ -293,7 +288,7 @@
       }, 'mergulho');
   }
 
-  /* ---------- 2. Como avaliamos: a ficha se preenche e os números voam até a conta ---------- */
+  
 
   function avaliacao(cel) {
     const el = $('#avaliacao'), folha = $('.av-folha', el);
@@ -306,19 +301,19 @@
     const ops1 = $$('.c-op', linha1), resto2 = [...linha2.children];
     const carimbo = $('.carimbo', el);
     const peso = { g: 0 };
-    // o CSS deixa o ponteiro no centro do 18k (62,5%); estes são os desvios até cada amostra
+ 
     const centro = (i) => itens[i].offsetLeft + itens[i].offsetWidth / 2 - quilates.clientWidth * 0.625;
-    // distância de onde o número está até o lugar dele na conta
+
     const voo = (de, para) => { const a = posEm(de, el), b = posEm(para, el); return { x: a.x - b.x, y: a.y - b.y }; };
     const partes = (p) => ({ titulo: $('.av-passo-titulo', p), txt: $$('.av-txt .word', p) });
 
     const tl = cena(el, '+=320%');
-    // a folha sai da impressora, de cima para baixo
+ 
     tl.fromTo(folha, { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.9, ease: 'power2.out' }, 0)
       .fromTo($$('.av-titulo .word', el), PENA0, { ...PENA1, duration: 0.4, stagger: 0.08 }, 0.5)
       .fromTo($$('.av-sub, .av-ref', el), { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.8);
 
-    // passo 1: teste do quilate
+    
     const a = partes(p1);
     tl.fromTo(a.titulo, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 1.2)
       .fromTo(a.txt, PENA0, { ...PENA1, duration: 0.25, stagger: 0.03 }, 1.3)
@@ -331,7 +326,7 @@
       .fromTo(cTeor, { opacity: 0 }, { opacity: 1, duration: 0.1 }, 3.5)
       .fromTo(cTeor, { x: () => voo(qTeor, cTeor).x, y: () => voo(qTeor, cTeor).y }, { x: 0, y: 0, duration: 0.9, ease: 'power2.inOut' }, 3.5);
 
-    // passo 2: pesagem
+
     const b = partes(p2);
     tl.fromTo(b.titulo, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.8)
       .fromTo(b.txt, PENA0, { ...PENA1, duration: 0.25, stagger: 0.03 }, 3.9)
@@ -341,7 +336,7 @@
       .fromTo(cPeso, { opacity: 0 }, { opacity: 1, duration: 0.1 }, 5.8)
       .fromTo(cPeso, { x: () => voo(leitorNum, cPeso).x, y: () => voo(leitorNum, cPeso).y }, { x: 0, y: 0, duration: 0.9, ease: 'power2.inOut' }, 5.8);
 
-    // passo 3: a conta se completa na frente do cliente
+
     const c = partes(p3);
     tl.fromTo(c.titulo, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 6.6)
       .fromTo(c.txt, PENA0, { ...PENA1, duration: 0.25, stagger: 0.03 }, 6.7)
@@ -353,10 +348,10 @@
       .fromTo(resto2, PENA0, { ...PENA1, duration: 0.35, stagger: 0.25 }, 8.1)
       .fromTo(carimbo, { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'power3.in' }, 9.4)
       .to({}, { duration: 0.8 })
-      // saída: a folha é puxada para cima, como de uma prancheta
+ 
       .to(folha, { yPercent: -118, rotation: -3, transformOrigin: '50% 0%', duration: 1.4, ease: 'power2.in' });
 
-    // no celular, um passo por tela: as páginas da ficha passam para o lado
+ 
     if (cel) {
       tl.fromTo(p1, { xPercent: 0 }, { xPercent: -105, duration: 0.5, ease: 'power2.inOut' }, 3.7)
         .fromTo(p2, { xPercent: 105 }, { xPercent: 0, duration: 0.5, ease: 'power2.inOut' }, 3.7)
@@ -365,7 +360,7 @@
     }
   }
 
-  /* ---------- 3. O que compramos: a etiqueta desce no fio e vira para a próxima ---------- */
+
 
   function compramos() {
     const el = $('#compramos');
@@ -393,13 +388,13 @@
         .to(itens[i + 1], { opacity: 1, duration: 0.3 }, t + 0.5);
     });
 
-    // saída: duas placas fecham a tela e se encontram no picote
+  
     tl.to({}, { duration: 0.5 }, 1.9 + (n - 1) * 1.3 + 0.9)
       .fromTo(cima, { yPercent: -101 }, { yPercent: 0, duration: 1, ease: 'power2.in' })
       .fromTo(baixo, { yPercent: 101 }, { yPercent: 0, duration: 1, ease: 'power2.in' }, '<');
   }
 
-  /* ---------- 4. Cautela da Caixa: a linha do tempo avança e o valor se divide ---------- */
+
 
   function cautela(cel) {
     const el = $('#cautela'), conteudo = $('.ct-conteudo', el);
@@ -423,12 +418,11 @@
       .fromTo(voce, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.6, ease: 'power2.inOut' }, 4.9)
       .fromTo($$('.ct-nota, .ct-acao', el), { opacity: 0 }, { opacity: 1, duration: 0.4, stagger: 0.2 }, 5.5)
       .to({}, { duration: 0.7 })
-      // saída: a câmera recua e a cena se afasta no escuro
+  
       .to(conteudo, { scale: 0.55, opacity: 0, transformOrigin: '50% 50%', duration: 1.3, ease: 'power2.in' });
     panorama(tl, el, conteudo, 0.6, 5.2);
   }
 
-  /* ---------- 5. A domicílio: as regiões acendem no mapa (no celular, na lista) ---------- */
 
   function domicilio() {
     const el = $('#domicilio'), grade = $('.dm-grade', el), num = $('.dm-num', el);
@@ -459,12 +453,11 @@
 
     tl.fromTo($$('.dm-nota, .dm-legenda', el), { opacity: 0 }, { opacity: 1, duration: 0.4 }, inicio + pontos.length * passo)
       .to({}, { duration: 0.6 })
-      // saída: linhas de pauta atravessam a tela e viram a folha das perguntas
+  
       .to(faixas, { scaleX: 1, duration: 0.6, stagger: 0.06, ease: 'power2.inOut' });
     panorama(tl, el, grade, 0.4, 4.4);
   }
 
-  /* ---------- 6. Perguntas: uma por vez, a resposta acende palavra por palavra ---------- */
 
   function perguntas(cel) {
     const el = $('#perguntas'), grade = $('.pq-grade', el), itens = $$('.pq-item', el), nivel = $('.pq-nivel', el);
@@ -477,7 +470,7 @@
       const t = 1.0 + i * 1.2;
       const q = $('.pq-q', it), a = $('.pq-a', it), palavras = $$('.pq-a .word', it);
       if (cel) {
-        // celular: a pergunta seguinte cobre a anterior, de cima para baixo
+     
         tl.fromTo(it, { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.4 }, t);
         if (i > 0) tl.to(itens[i - 1], { opacity: 0, duration: 0.3 }, t);
       } else {
@@ -494,13 +487,13 @@
       tl.fromTo(palavras, { opacity: 0.15 }, { opacity: 1, duration: 0.25, stagger: 0.04 }, t + 0.2);
     });
 
-    // saída: a tinta sobe como o nível numa proveta graduada
+
     tl.to({}, { duration: 0.6 })
       .fromTo(nivel, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'power1.inOut' });
     panorama(tl, el, grade, 0.2, 1.0 + itens.length * 1.2);
   }
 
-  /* ---------- 7. Contato: o convite final ---------- */
+
 
   function contato() {
     const el = $('#contato'), conteudo = $('.fi-conteudo', el);
