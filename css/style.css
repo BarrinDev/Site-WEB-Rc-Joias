@@ -1,16 +1,14 @@
-/* RC Joias · compra de ouro e cautelas
-   Direção: ficha de avaliação. Papel, tinta azul-preta, números tabulares e a caneta azul do avaliador.
-   O ouro aparece como material (amostras e peças desenhadas), nunca como cor de texto. */
+
 
 :root {
   --papel: #F2F1EC;
   --papel-2: #E7E5DD;
   --tinta: #16202E;
-  --grafite: #4F5763;        /* texto secundário sobre papel (6,6:1) */
-  --linha: #C9CBC6;          /* filetes sobre papel, decorativo */
-  --caneta: #2747B5;         /* destaques sobre papel (6,9:1) */
-  --caneta-clara: #8FA6F0;   /* destaques sobre tinta (7:1) */
-  --papel-suave: #B4B8BE;    /* texto secundário sobre tinta (8,2:1) */
+  --grafite: #4F5763;      
+  --linha: #C9CBC6;         
+  --caneta: #2747B5;         
+  --caneta-clara: #8FA6F0;  
+  --papel-suave: #B4B8BE;    
   --ouro: #CFA14A;
   --ouro-claro: #D9AE57;
   --ouro-sombra: #7A5A1E;
@@ -26,13 +24,13 @@
   --regua: 44px;
   --tela: 100vh;
 
-  /* metal escovado gerado em SVG (riscos escuros e claros), sem foto */
+ 
   --escovado: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='240'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008 0.9' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 -0.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
   --escovado-claro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='240'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.7' numOctaves='2' seed='8' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.45 -0.15'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
 }
 @supports (height: 100svh) { :root { --tela: 100svh; } }
 
-/* ---------- base ---------- */
+
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 html.carregando { overflow: hidden; }
@@ -68,19 +66,19 @@ p { margin: 0; }
 }
 .pular:focus { top: 12px; }
 
-/* dado que ainda falta: fica visível de propósito até ser preenchido */
+
 .preencher { font-style: italic; text-decoration: underline dashed 1px; text-underline-offset: .28em; }
 .preencher::before { content: "‹ "; }
 .preencher::after { content: " ›"; }
 
-/* palavras do SplitType */
+
 .word { display: inline-block; }
 .mascara {
   display: inline-block; overflow: hidden; vertical-align: top;
   padding: .06em .04em .14em; margin: -.06em -.04em -.14em;
 }
 
-/* ---------- topo ---------- */
+
 .topo {
   position: fixed; inset: 0 0 auto 0; z-index: 40;
   display: flex; justify-content: space-between; align-items: center;
@@ -99,7 +97,7 @@ p { margin: 0; }
 }
 .menu-botao::before { content: ""; width: 18px; height: 7px; border-top: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; }
 
-/* ---------- régua de progresso ---------- */
+
 .regua { display: none; }
 .motion .regua {
   display: block; position: fixed; z-index: 39;
@@ -130,7 +128,7 @@ p { margin: 0; }
   transform: translateY(calc(var(--p, 0) * 68vh));
 }
 
-/* ---------- WhatsApp ---------- */
+
 .wa {
   position: fixed; z-index: 41;
   right: var(--margem); bottom: max(16px, env(safe-area-inset-bottom));
@@ -144,7 +142,7 @@ p { margin: 0; }
 .wa:hover { background: var(--caneta); }
 .na-final .wa { opacity: 0; pointer-events: none; }
 
-/* ---------- índice (menu) ---------- */
+
 .indice {
   position: fixed; inset: 0; z-index: 60;
   display: flex; flex-direction: column;
@@ -168,7 +166,7 @@ p { margin: 0; }
 .indice-lista a:hover .ix-nome { text-decoration: underline; text-decoration-thickness: 2px; }
 .indice-contato { display: flex; flex-wrap: wrap; gap: 8px 28px; font-family: var(--mono); font-size: 1rem; }
 
-/* ---------- visor de balança (preloader, abertura e pesagem) ---------- */
+
 .visor {
   position: relative; display: flex; align-items: center; justify-content: flex-end; gap: .22em;
   aspect-ratio: 3 / 1; padding: 0 .5em; border-radius: 6px;
@@ -178,7 +176,7 @@ p { margin: 0; }
 .visor-un { align-self: flex-end; margin-bottom: .62em; font-size: .4em; color: var(--papel-suave); }
 .visor-ok { position: absolute; left: .42em; top: .38em; width: .16em; height: .16em; border-radius: 50%; background: var(--caneta-clara); }
 
-/* ---------- preloader ---------- */
+
 .preloader { display: none; }
 .motion .preloader { display: block; position: fixed; inset: 0; z-index: 90; }
 .pl-fundo { position: absolute; inset: 0; background: var(--papel); }
@@ -192,11 +190,11 @@ p { margin: 0; }
   text-align: center; font-family: var(--mono); font-size: 1rem; color: var(--grafite);
 }
 
-/* ---------- cenas ---------- */
+
 .cena { position: relative; overflow: hidden; }
 .motion .cena { height: var(--tela); }
 
-/* 1. Abertura: texto e balança em desenho técnico */
+
 .abertura { background: var(--papel); }
 .ab-cena {
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center;
@@ -223,7 +221,7 @@ p { margin: 0; }
   background: var(--papel-2); clip-path: ellipse(0px 0px at 50% 50%);
 }
 
-/* desenho da balança */
+
 .cota path { fill: none; stroke: var(--grafite); stroke-width: 1; }
 .cota text, .bl-txt { font-family: var(--mono); font-size: 11px; fill: var(--grafite); }
 .bl-topo { fill: var(--papel-2); stroke: var(--tinta); stroke-width: 2; stroke-linejoin: round; }
@@ -236,7 +234,6 @@ p { margin: 0; }
 .cr-sombra { stroke: var(--ouro-sombra); stroke-width: 3.4; }
 .cr-ouro { stroke: var(--ouro-claro); stroke-width: 1.8; }
 
-/* 2. Como avaliamos: a ficha */
 .avaliacao { background: var(--papel-2); }
 .av-mesa {
   display: flex; align-items: center; justify-content: center; min-height: var(--tela);
@@ -295,7 +292,7 @@ p { margin: 0; }
   font-family: var(--mono); font-size: .95rem; transform: rotate(-6deg);
 }
 
-/* 3. O que compramos: etiquetas */
+
 .compramos { background: var(--papel-2); }
 .cp-grade {
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center;
@@ -351,7 +348,7 @@ p { margin: 0; }
 .cp-placa--cima { top: 0; border-bottom: 2px dashed var(--papel-suave); }
 .cp-placa--baixo { bottom: 0; }
 
-/* 4. Cautela da Caixa */
+
 .cautela { background: var(--tinta); color: var(--papel); }
 .ct-conteudo {
   display: flex; flex-direction: column; justify-content: safe center; gap: clamp(20px, 4vh, 44px);
@@ -386,7 +383,7 @@ p { margin: 0; }
 .link-seta { display: inline-flex; gap: 10px; font-weight: 700; color: var(--caneta-clara); text-decoration: underline 2px; text-underline-offset: .25em; }
 .link-seta::after { content: "→"; }
 
-/* 5. A domicílio: mapa */
+
 .domicilio { background: var(--tinta); color: var(--papel); }
 .dm-grade {
   display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: center;
@@ -423,7 +420,7 @@ p { margin: 0; }
 .motion .dm-pauta { display: block; position: absolute; inset: 0; z-index: 6; pointer-events: none; }
 .dm-pauta i { position: absolute; left: 0; right: 0; top: calc(var(--i) * 10%); height: calc(10% + 1px); background: var(--papel); transform-origin: 0 50%; }
 
-/* 6. Perguntas: folha pautada */
+
 .perguntas {
   background-color: var(--papel);
   background-image: repeating-linear-gradient(to bottom, transparent 0 47px, rgba(39, 71, 181, .09) 47px 48px);
@@ -449,7 +446,7 @@ p { margin: 0; }
     repeating-linear-gradient(to bottom, var(--papel-suave) 0 1.5px, transparent 1.5px 20%) left / 22px 100% no-repeat;
 }
 
-/* 7. Contato */
+
 .contato { background: var(--tinta); color: var(--papel); }
 .fi-conteudo {
   display: flex; flex-direction: column; justify-content: safe center; gap: clamp(18px, 3.4vh, 34px);
@@ -474,7 +471,7 @@ p { margin: 0; }
   font-family: var(--mono); font-size: .9rem; color: var(--papel-suave);
 }
 
-/* ---------- com movimento, no computador ---------- */
+
 .motion .q-escolhido .q-amostra { outline: none; }
 @media (min-width: 900px) {
   .dm-lista { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -484,7 +481,6 @@ p { margin: 0; }
   .motion .pq-a { position: absolute; left: 52%; right: 0; top: 0; margin: 0; font-size: clamp(1.3rem, 2vw, 1.9rem); line-height: 1.35; }
 }
 
-/* ---------- celular: experiência redesenhada ---------- */
 @media (max-width: 899px) {
   :root { --regua: 0px; }
   .marca-sub { display: none; }
